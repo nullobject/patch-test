@@ -4,7 +4,13 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "openocd flash",
+      "label": "build",
+      "type": "shell",
+      "command": "make all",
+      "group": "build"
+    },
+    {
+      "label": "program",
       "type": "shell",
       "command": "openocd -f interface/ftdi/olimex-arm-usb-ocd-h.cfg -f target/stm32h7x.cfg -c \"program build/test.elf reset exit\"",
       "problemMatcher": []
