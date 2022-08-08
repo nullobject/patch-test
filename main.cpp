@@ -11,6 +11,7 @@ using namespace daisysp;
 
 /** Daisy patch sm object */
 DaisyPatchSM patch;
+Switch toggle;
 
 /** Callback for processing and synthesizing audio
  *
@@ -24,6 +25,9 @@ DaisyPatchSM patch;
  *
  */
 void AudioCallback(AudioHandle::InputBuffer in, AudioHandle::OutputBuffer out, size_t size) {
+  patch.ProcessAllControls();
+  toggle.Debounce();
+
   for(size_t i = 0; i < size; i++) {
     /** set the left output to the current left input */
     OUT_L[i] = IN_L[i];
@@ -39,6 +43,9 @@ int main(void) {
   * This sets the samplerate to its default of 48kHz.
   */
   patch.Init();
+  patch.StartLog(false);
+
+  toggle.Init(DaisyPatchSM::B8);
 
   /** Set the samplerate to 96kHz */
   patch.SetAudioSampleRate(96000);
@@ -51,9 +58,11 @@ int main(void) {
 
   /** Loop forever */
   while(1) {
+    float value = patch.GetAdcValue(CV_1);
+    patch.PrintLine("CV_1: " FLT_FMT3, FLT_VAR3(value));
     patch.WriteCvOut(CV_OUT_2, 5);
-    patch.Delay(500);
+    if (toggle.Pressed()) { patch.Delay(1000); } else { patch.Delay(100); }
     patch.WriteCvOut(CV_OUT_2, 0);
-    patch.Delay(500);
+    if (toggle.Pressed()) { patch.Delay(1000); } else { patch.Delay(100); }
   }
 }
