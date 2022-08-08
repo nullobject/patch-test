@@ -52,8 +52,8 @@ int main(void) {
   /** Loop forever */
   while(1) {
     patch.WriteCvOut(CV_OUT_2, 5);
-    patch.Delay(1000);
+    patch.Delay(500);
     patch.WriteCvOut(CV_OUT_2, 0);
-    patch.Delay(1000);
+    patch.Delay(500);
   }
 }
