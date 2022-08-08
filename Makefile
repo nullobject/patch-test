@@ -1,7 +1,5 @@
 # Project Name
-TARGET = Test
-
-USE_FATFS = 1
+TARGET = test
 
 # Sources
 CPP_SOURCES = main.cpp
